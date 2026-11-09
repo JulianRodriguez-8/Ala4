@@ -7,7 +7,7 @@ export const tituloValido = (titulo) => {
     }
     // Quitamos los espacios vacíos de los extremos con .trim()
     const trimmed = titulo.trim();
-    return trimedd !== "" && trimedd.length <= 100;
+    return trimmed !== "" && trimmed.length <= 100;
 }
 
 export const descripcionValida = (descripcion) => {
