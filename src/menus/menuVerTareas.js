@@ -52,7 +52,7 @@ export const ejecutarMenuVer = (tareas) => {
     );
     if (seleccion === 0) {
         console.log("Volviendo...");
-        return;
+        return tareas;
     }
     if (seleccion < 1 || seleccion > ordenadas.length) {
         console.log("Número de tarea inválido.");
