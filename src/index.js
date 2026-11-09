@@ -3,6 +3,8 @@
 import readlineSync from "readline-sync";
 import { ejecutarMenuAgregar } from "./menus/menuAgregarTarea.js";
 import { ejecutarMenuVer } from "./menus/menuVerTareas.js";
+import { ejecutarMenuModificar } from "./menus/menuEditarTarea.js";
+import { ejecutarMenuBuscar } from "./menus/menuBuscarTarea.js";
 
 //array vacion inmutable
 let misTareas = Object.freeze([]);
@@ -32,10 +34,10 @@ while (ejecutando) {
             misTareas = ejecutarMenuVer(misTareas);
             break;
         case 3:
-            misTareas = ejecutarMenuVer(misTareas);
+            misTareas = ejecutarMenuBuscar(misTareas);
             break;
         case 4:
-            misTareas = ejecutarMenuVer(misTareas);
+            misTareas = ejecutarMenuModificar(misTareas);
             break;
 
 
