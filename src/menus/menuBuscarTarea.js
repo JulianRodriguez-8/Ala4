@@ -1,9 +1,9 @@
-
 import readlineSync from "readline-sync";
 import { buscarTareaPorTitulo } from "../tareas/tareaStores.js";
 import { ejecutarMenuDetalle } from "./menuDetalleTarea.js";
+import { Tarea } from "../tareas/tarea.js";
 
-export const ejecutarMenuBuscar = (tareas) => {
+export const ejecutarMenuBuscar = (tareas: readonly Tarea[]): readonly Tarea[] => {
     console.log("=== BUSCAR UNA TAREA ===");
 
     if (tareas.length == 0) {
@@ -11,7 +11,7 @@ export const ejecutarMenuBuscar = (tareas) => {
         return tareas;
     }
 
-    const palabraBuscada = readlineSync.question(
+    const palabraBuscada: string = readlineSync.question(
         "Ingresá la palabra a buscar (0 para volver): "
     );
     if (palabraBuscada === "0" || palabraBuscada.trim() === "") {
@@ -26,12 +26,12 @@ export const ejecutarMenuBuscar = (tareas) => {
     }
     console.log("\n--- TAREAS ENCONTRADAS ---");
     //los resultados obtenidos usando .forEach() en lugar de bucles
-    tareasEncontradas.forEach()((tarea, index) => {
+    tareasEncontradas.forEach((tarea: Tarea, index: number) => {
         console.log(`${index + 1}. ${tarea.titulo} | Estado: ${tarea.estado}`);
     });
     console.log("0. Volver");
 
-    const seleccion = readlineSync.questionInt(
+    const seleccion: number = readlineSync.questionInt(
         "Elegí una tarea para ver el detalle: "
     );
 
@@ -45,7 +45,7 @@ export const ejecutarMenuBuscar = (tareas) => {
         return tareas;
     }
 
-    const tareaElegida = tareasEncontradas[seleccion - 1];
+    const tareaElegida: Tarea = tareasEncontradas[seleccion - 1];
 
     const tareasActualizadas = ejecutarMenuDetalle(tareaElegida, tareas);
 
