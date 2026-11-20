@@ -1,0 +1,89 @@
+[33mcommit e38ba69a2183df2ddf49c8a9fb7e0b4671fd2b5a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: julian <zolibanzolibaneta@gmail.com>
+Date:   Fri Nov 20 13:02:39 2026 -0300
+
+    tareastroe a ts hecho
+
+[1mdiff --git a/src/tareas/tareaStores.js b/src/tareas/tareaStores.js[m
+[1mindex 7648edc..9846924 100644[m
+[1m--- a/src/tareas/tareaStores.js[m
+[1m+++ b/src/tareas/tareaStores.js[m
+[36m@@ -1,15 +1,26 @@[m
+ //ahora importo lo nuevo[m
+[31m-import { crearTareaObjeto, actualizarTareaObjeto } from "./tarea.js";[m
+[31m-//Agregado[m
+[31m-let contadorId = 0;[m
+[32m+[m[32mimport { crearTareaObjeto, actualizarTareaObjeto, Tarea, EstadoTarea, DificultadTarea, ActualizacionTarea } from "./tarea.js";[m
+[32m+[m
+[32m+[m[32mexport interface DatosNuevaTarea {[m
+[32m+[m[32m    titulo: string;[m
+[32m+[m[32m    descripcion?: string;[m
+[32m+[m[32m    estado?: EstadoTarea;[m
+[32m+[m[32m    vencimiento?: string;[m
+[32m+[m[32m    dificultad?: DificultadTarea;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mexport interface ResultadoAgregarTarea {[m
+[32m+[m[32m    nuevaTarea: Tarea;[m
+[32m+[m[32m    tareasActualizadas: readonly Tarea[];[m
+[32m+[m[32m}[m
+ [m
+ [m
+ //agrgo tarea de forma inmutable[m
+[31m-export const agregarTarea = (tareas, {titulo, descripcion, estado, vencimiento, dificultad}) =>  { // Recibe el array actual de tareas y un objeto con los datos de la nueva tarea.[m
+[31m- contadorId++;[m
+[32m+[m[32mexport const agregarTarea = (tareas: readonly Tarea[], {titulo, descripcion, estado, vencimiento, dificultad}: DatosNuevaTarea): ResultadoAgregarTarea =>  { // Recibe el array actual de tareas y un objeto con los datos de la nueva tarea.[m
+[32m+[m[32m    const siguienteId = tareas.reduce((max, t) => (t.id > max ? t.id : max), 0) + 1;[m
+ [m
+  //creamos la nueva tarea usando la función crearTareaObjeto[m
+[31m-    const nuevaTarea = crearTareaObjeto(titulo, descripcion, estado, vencimiento, dificultad, contadorId);[m
+[32m+[m[32m    const nuevaTarea = crearTareaObjeto(titulo, descripcion, estado, vencimiento, dificultad, siguienteId);[m
+ [m
+     return {[m
+         nuevaTarea, [m
+[36m@@ -20,34 +31,33 @@[m [mexport const agregarTarea = (tareas, {titulo, descripcion, estado, vencimiento,[m
+ }[m
+ [m
+ // ahora reemplazamos los bucles por funciones de orden superior como map,filtrer[m
+[31m-export const buscarTareaPorTitulo = (tareas, palabraBuscada) => {[m
+[32m+[m[32mexport const buscarTareaPorTitulo = (tareas: readonly Tarea[], palabraBuscada: string): readonly Tarea[] => {[m
+ // filter() recorre el array y devuelve un array NUEVO filtrando solo las tareas [m
+     // cuyo título contenga la palabra buscada[m
+[31m-    return tareas.filter(tarea => tarea.titulo.toLowerCase().includes(palabraBuscada.toLowerCase()));[m
+[32m+[m[32m    return Object.freeze(tareas.filter(tarea => tarea.titulo.toLowerCase().includes(palabraBuscada.toLowerCase())));[m
+ }[m
+ [m
+[31m-export const filtrarTareasPorEstado = (tareas, estadoBuscado) => {[m
+[32m+[m[32mexport const filtrarTareasPorEstado = (tareas: readonly Tarea[], estadoBuscado?: EstadoTarea | string): readonly Tarea[] => {[m
+     [m
+   if (!estadoBuscado) return tareas; [m
+ [m
+[31m-  return tareas.filter(tarea => tarea.estado.toLowerCase() === estadoBuscado.toLowerCase() );[m
+[32m+[m[32m  return Object.freeze(tareas.filter(tarea => tarea.estado.toLowerCase() === estadoBuscado.toLowerCase() ));[m
+ }[m
+ [m
+[31m-export const ordenarTareasAlfabeticamente = (tareas) => {[m
+[32m+[m[32mexport const ordenarTareasAlfabeticamente = (tareas: readonly Tarea[]): readonly Tarea[] => {[m
+     //sort() ordena el array de tareas alfabéticamente según el título de cada tarea, usando localeCompare para una comparación de cadenas más precisa. pero muta el array original, por eso usamos spread operator para crear un nuevo array antes de ordenar.[m
+[31m-    return [...tareas].sort((a, b) => a.titulo.localeCompare(b.titulo));[m
+[32m+[m[32m    return Object.freeze([...tareas].sort((a, b) => a.titulo.localeCompare(b.titulo)));[m
+ }[m
+ //actualizamos usando .map()[m
+[31m-export const actualizarTareaEnCollection=(tareas, Idtarea,nuevosDatos)=>{[m
+[32m+[m[32mexport const actualizarTareaEnCollection=(tareas: readonly Tarea[], Idtarea: number,nuevosDatos: ActualizacionTarea): readonly Tarea[]=>{[m
+     // .map() recorre todo el array y devuelve un array NUEVO de la misma longitud, transformando los elementos según la condición.[m
+[31m-    return tareas.map(tarea=>{[m
+[32m+[m[32m    return Object.freeze(tareas.map(tarea=>{[m
+         if (tarea.id===Idtarea){[m
+             return actualizarTareaObjeto(tarea,nuevosDatos);[m
+ [m
+         }[m
+         return tarea;[m
+ [m
+[31m-    });[m
+[31m-[m
+[31m-}[m
+[32m+[m[32m    }));[m
+ [m
+[32m+[m[32m}[m
+\ No newline at end of file[m
