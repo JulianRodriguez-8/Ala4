@@ -1,8 +1,8 @@
 import readlineSync from "readline-sync";
 //nuevos imports
-import { agregarTarea } from "../tareas/tareaStores.js";
-import { tituloValido, descripcionValida } from "../tareas/validaciones.js";
-import { Tarea, EstadoTarea, DificultadTarea } from "../tareas/tarea.js";
+import { agregarTarea } from "../tareas/tareaStores.ts";
+import { tituloValido, descripcionValida } from "../tareas/validaciones.ts";
+import { Tarea, EstadoTarea, DificultadTarea } from "../tareas/tarea.ts";
 
 // Recibe el array actual de tareas por parámetro (aislamiento de datos)
 export const ejecutarMenuAgregar = (tareas: readonly Tarea[]): readonly Tarea[] => {

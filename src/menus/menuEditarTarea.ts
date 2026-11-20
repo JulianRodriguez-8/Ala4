@@ -1,9 +1,10 @@
 import readlineSync from "readline-sync";
 import { actualizarTareaEnCollection } from "../tareas/tareaStores.js";
 import { tituloValido, descripcionValida } from "../tareas/validaciones.js";
+import { ActualizacionTarea, DificultadTarea, EstadoTarea, Tarea } from "../tareas/tarea.js";
 
 // Recibe el array global de tareas
-export const ejecutarMenuModificar = (tareas) => {
+export const ejecutarMenuModificar = (tareas: readonly Tarea[]): readonly Tarea[] => {
     console.log("\n=== MODIFICAR TAREA ===");
 
     if (tareas.length === 0) {
@@ -11,10 +12,10 @@ export const ejecutarMenuModificar = (tareas) => {
         return tareas;
     }
 
-    const idBuscado = readlineSync.questionInt("Ingrese el ID de la tarea que desea modificar: ");
+    const idBuscado: number = readlineSync.questionInt("Ingrese el ID de la tarea que desea modificar: ");
 
     // Buscamos la tarea dentro del array
-    const tarea = tareas.find(t => t.id === idBuscado);
+    const tarea: Tarea | undefined = tareas.find(t => t.id === idBuscado);
 
     if (!tarea) {
         console.log("No se encontró ninguna tarea con ese ID.");
@@ -24,21 +25,21 @@ export const ejecutarMenuModificar = (tareas) => {
     console.log(`Modificando tarea: "${tarea.titulo}"`);
     console.log("Dejá en blanco y presioná Enter para no modificar un campo de texto.");
 
-    const nuevoTitulo = readlineSync.question(`Nuevo título [${tarea.titulo}]: `);
-    const nuevaDescripcion = readlineSync.question(`Nueva descripción [${tarea.descripcion || ""}]: `);
+    const nuevoTitulo: string = readlineSync.question(`Nuevo título [${tarea.titulo}]: `);
+    const nuevaDescripcion: string = readlineSync.question(`Nueva descripción [${tarea.descripcion || ""}]: `);
 
     console.log(`Estado actual: ${tarea.estado}`);
     console.log("1. Pendiente  2. En curso  3. Terminada  4. Cancelada  (0 para no modificar)");
-    const opEstado = readlineSync.questionInt("Elegí una opción de estado: ");
+    const opEstado: number = readlineSync.questionInt("Elegí una opción de estado: ");
 
     console.log(`Dificultad actual: ${tarea.dificultad}`);
     console.log("1. Fácil  2. Media  3. Difícil  (0 para no modificar)");
-    const opDificultad = readlineSync.questionInt("Elegí una opción de dificultad: ");
+    const opDificultad: number = readlineSync.questionInt("Elegí una opción de dificultad: ");
 
-    const nuevoVencimiento = readlineSync.question(`Nuevo vencimiento [${tarea.vencimiento || "Sin vencimiento"}]: `);
+    const nuevoVencimiento: string = readlineSync.question(`Nuevo vencimiento [${tarea.vencimiento || "Sin vencimiento"}]: `);
 
     // Objeto vacío para guardar únicamente lo que el usuario decidió cambiar
-    const nuevosDatos = {};
+    const nuevosDatos: ActualizacionTarea = {};
 
   
     if (nuevoTitulo !== "") {
@@ -59,12 +60,12 @@ export const ejecutarMenuModificar = (tareas) => {
     }
 
     // evitando if/else largos
-    const estadosMap = { 1: "Pendiente", 2: "En curso", 3: "Terminada", 4: "Cancelada" };
+    const estadosMap: Record<number, EstadoTarea> = { 1: "Pendiente", 2: "En curso", 3: "Terminada", 4: "Cancelada" };
     if (estadosMap[opEstado]) {
         nuevosDatos.estado = estadosMap[opEstado];
     }
 
-    const dificultadesMap = { 1: "Fácil", 2: "Media", 3: "Difícil" };
+    const dificultadesMap: Record<number, DificultadTarea> = { 1: "Fácil", 2: "Media", 3: "Difícil" };
     if (dificultadesMap[opDificultad]) {
         nuevosDatos.dificultad = dificultadesMap[opDificultad];
     }

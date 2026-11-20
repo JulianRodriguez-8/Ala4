@@ -1,14 +1,14 @@
-
 //agrego
 import readlineSync from "readline-sync";
 import { ejecutarMenuAgregar } from "./menus/menuAgregarTarea.js";
 import { ejecutarMenuVer } from "./menus/menuVerTareas.js";
 import { ejecutarMenuModificar } from "./menus/menuEditarTarea.js";
 import { ejecutarMenuBuscar } from "./menus/menuBuscarTarea.js";
+import { Tarea } from "./tareas/tarea.js";
 
 //array vacion inmutable
-let misTareas = Object.freeze([]);
-let ejecutando = true;
+let misTareas: readonly Tarea[] = Object.freeze([]);
+let ejecutando: boolean = true;
 
 //impuro
 while (ejecutando) {
@@ -22,7 +22,7 @@ while (ejecutando) {
     console.log("4. Modificar tarea");
     console.log("0. Salir");
 
-    const opcion = readlineSync.questionInt("Elija una opcion:");
+    const opcion: number = readlineSync.questionInt("Elija una opcion:");
 
     switch (opcion) {
         case 1:
@@ -51,11 +51,3 @@ while (ejecutando) {
             break;
     }
 }
-
-
-
-
-
-
-
-
